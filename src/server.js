@@ -1,6 +1,6 @@
 const express = require('express'); // Importa o express
 const cors = require('cors'); // Para trabalhar com chamadas https de outros ips
-/* const routes = require('./routes/routes') */; // Importa as rotas
+const routes = require('./routes/routes'); // Importa as rotas
 const connection = require('./database/connection');// Importa a conexão com o banco de dados
 
 const PORT_API = process.env.PORT_API // Possível graças ao dotenv, que possibilita essa funcionalidade.
@@ -9,7 +9,7 @@ class Server {
     constructor (server=express()){
         this.middlewares(server) // Aplica os middlewares
         this.database() // Inicia o banco de dados
-       /*  server.use(routes) */  /// Liga as rotas - Registra no express
+        server.use(routes) // Liga as rotas - Registra no express
         this.initializeServer(server) // Inicia o servidor
 
     } // O express é uma função, então posso passar o express como parâmetro para o meu servidor.
