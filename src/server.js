@@ -9,7 +9,7 @@ class Server {
     constructor (server=express()){
         this.middlewares(server) // Aplica os middlewares
         this.database() // Inicia o banco de dados
-        server.use(routes)  /// Liga as rotas - Registra no express
+        server.use(routes) // Liga as rotas - Registra no express
         this.initializeServer(server) // Inicia o servidor
 
     } // O express é uma função, então posso passar o express como parâmetro para o meu servidor.
