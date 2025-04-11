@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const Usuario = require('../models/Usuario'); // Importa o modelo de usuários. O modelo é importado para ser usado no controller. O modelo é usado para fazer operações no banco de dados, como criar, ler, atualizar e deletar registros.
 
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Expressão regular para validar o email. O regex é usado para validar o email. O regex é uma expressão regular que valida o formato do email
@@ -21,17 +22,30 @@ class UsuarioController{
                 return res.status(400).json({message: 'Formato de Email inválido!'});
             }
 
+            if(dados.cpf.length !== 11){
+                return res.status(400).json({message: 'CPF inválido, O CPF deve conter 11 dígitos!'}); // Retorna uma resposta de erro com o status 400 e uma mensagem de erro. O status 400 indica que a requisição é inválida. A mensagem é enviada no formato json.
+            }
+
             // Validação - CPF e email duplicados
             const emailOuCpfDuplicado = await Usuario.findOne({ // Verifica se o usuário já existe no banco de dados. O findOne é um método do sequelize que busca um registro no banco de dados. O método recebe um objeto com os dados do usuário.
                 where: {
-                    email: dados.email,// Verifica se o email já existe no banco de dados. O where é usado para filtrar os registros do banco de dados. O método retorna o primeiro registro encontrado ou null se não encontrar nenhum registro.
-                    cpf: dados.cpf // Verifica se o cpf já existe no banco de dados. O where é usado para filtrar os registros do banco de dados. O método retorna o primeiro registro encontrado ou null se não encontrar nenhum registro.
+                    [Op.or]: [
+                        {email: dados.email},// Verifica se o email já existe no banco de dados. O where é usado para filtrar os registros do banco de dados. O método retorna o primeiro registro encontrado ou null se não encontrar nenhum registro.
+                        {cpf: dados.cpf} // Verifica se o cpf já existe no banco de dados. O where é usado para filtrar os registros do banco de dados. O método retorna o primeiro registro encontrado ou null se não encontrar nenhum registro.
+                    ]  // O operador or é usado para fazer uma busca com o operador or. O operador or é usado para buscar registros que atendem a pelo menos uma das condições. O operador or é usado para fazer uma busca com o operador or. O operador or é usado para buscar registros que atendem a pelo menos uma das condições.
                 }
+                    
             });
 
             if(emailOuCpfDuplicado){ // Se o email ou CPF já existe no banco de dados, a condição será verdadeira.
                 return res.status(400).json({message: 'Email ou CPF já cadastrado!'}); // Retorna uma resposta de erro com o status 400 e uma mensagem de erro. O status 400 indica que a requisição é inválida. A mensagem é enviada no formato json.
             }
+
+            const separadorDeData = dados.data_nascimento.includes('/') ? '/' : '-'; // Separa a data de nascimento em um array. O split divide a string em um array usando o caractere / como separador. O operador de desestruturação é usado para pegar os valores do array e atribuir a variáveis.
+            
+            const [dia, mes, ano] = dados.data_nascimento.split(separadorDeData); // Desestrutura os dados da data de nascimento. O split divide a string em um array usando o caractere / como separador. O operador de desestruturação é usado para pegar os valores do array e atribuir a variáveis.
+
+            dados.data_nascimento = `${ano}-${mes}-${dia}`; // Formata a data de nascimento para o formato YYYY-MM-DD. O formato da data é alterado para o formato YYYY-MM-DD, que é o formato aceito pelo banco de dados. O operador de template string é usado para criar uma string com os valores das variáveis.
 
 
 
