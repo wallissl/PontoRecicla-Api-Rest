@@ -8,7 +8,7 @@ const usuarioRoutes = new Router() // Cria uma nova instância do Router
 // usuarioRoutes.get('/', ) // Rota para listar todos os usuários
 // usuarioRoutes.get('/:id', ) // Rota para listar um usuário específico
 
-usuarioRoutes.post('/', UsuarioController.criarConta) // Rota para criar um novo usuário
+usuarioRoutes.post('/cadastrar', UsuarioController.criarConta) // Rota para criar um novo usuário
 // usuarioRoutes.put('/:id', ) // Rota para atualizar um usuário específico
 
 // usuarioRoutes.delete('/:id', ) // Rota para deletar um usuário específico
