@@ -73,6 +73,40 @@ class UsuarioController{
             res.status(500).json({message: 'Erro ao criar usuário!'}); // Retorna uma resposta de erro com o status 500 e uma mensagem de erro. O status 500 indica que ocorreu um erro interno no servidor. A mensagem é enviada no formato json.
         }
     }
+
+    async login(req, res){
+
+        const dados = req.body; 
+
+        if(!dados.email || !dados.senha){
+            return res.status(404).json({message: 'Email e senha são obrigatórios!'}); // Retorna uma resposta de erro com o status 400 e uma mensagem de erro. O status 400 indica que a requisição é inválida. A mensagem é enviada no formato json.
+        }
+
+        const usuario = await Usuario.findOne({
+            where: {
+                email: dados.email,
+            }
+        });
+
+        if(!usuario){
+            return res.status(404).json({message: 'Conta não encontrada!'});
+        }
+
+     /*    const senhaCorreta = await usuario.checkPassword(dados.senha); */ // Verifica se a senha está correta. O método checkPassword é um método do modelo de usuários que verifica se a senha está correta. O método recebe a senha digitada pelo usuário e compara com a senha armazenada no banco de dados.
+        const senhaCorreta = await Usuario.findOne({
+            where: {
+                senha: dados.senha,
+            }
+        });
+
+        if(!senhaCorreta){
+            return res.status(404).json({message: 'Senha incorreta!'}); // 
+
+        }
+
+        res.status(200).json({message: 'Login realizado com sucesso!',})
+
+    }// Método para fazer login. O método é responsável por fazer o login do usuário. O método recebe os dados do usuário e verifica se o usuário existe no banco de dados. Se o usuário existir, o método retorna os dados do usuário. Se o usuário não existir, o método retorna uma mensagem de erro.
 }
 
 module.exports = new UsuarioController(); // Exporta uma nova instância do controller de usuários. O controller é exportado para ser usado em outros arquivos, como o router. A instância é criada para que o controller possa ser usado como um singleton, ou seja, uma única instância do controller é criada e usada em toda a aplicação.
