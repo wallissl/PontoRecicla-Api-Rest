@@ -8,10 +8,14 @@ const usuarioRoutes = new Router() // Cria uma nova instância do Router
 // usuarioRoutes.get('/', ) // Rota para listar todos os usuários
 // usuarioRoutes.get('/:id', ) // Rota para listar um usuário específico
 
-usuarioRoutes.post('/', UsuarioController.criarConta) // Rota para criar um novo usuário
+usuarioRoutes.post('/cadastrar', UsuarioController.criarConta) // Rota para criar um novo usuário
 // usuarioRoutes.put('/:id', ) // Rota para atualizar um usuário específico
 
-// usuarioRoutes.delete('/:id', ) // Rota para deletar um usuário específico
+// usuarioRoutes.delete('/:id', ) // Rota para deletar um usuário específico.
+
+usuarioRoutes.post('/login', UsuarioController.login) // Rota para fazer login. O login é feito através de um POST para a rota /login. O controller de usuários é responsável por lidar com a lógica de login.
+
+
 
 
 module.exports = usuarioRoutes // Exporta as rotas de usuários. As rotas são exportadas para serem usadas no arquivo de rotas principal, onde todas as rotas da aplicação são registradas.
