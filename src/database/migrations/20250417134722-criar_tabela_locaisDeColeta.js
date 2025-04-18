@@ -13,7 +13,7 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false
         },
-          nomeDoLocal:{
+          nome_do_local:{
             type: Sequelize.STRING,
             allowNull: false
           },
@@ -49,7 +49,7 @@ module.exports = {
             type: Sequelize.STRING,
             allowNull: false
           },
-          materiaisAceitos:{
+          materiais_aceitos:{
             type: Sequelize.STRING,
             allowNull: false
           },
