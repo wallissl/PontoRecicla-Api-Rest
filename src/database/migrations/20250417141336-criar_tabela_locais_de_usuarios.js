@@ -4,7 +4,7 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable(
-      'locaisDeUsuarios',
+      'locais_de_usuarios',
       {
         id:{
           primaryKey: true,
@@ -12,7 +12,7 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false
         },
-          usuarioId:{
+          usuario_id:{
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {
@@ -22,11 +22,11 @@ module.exports = {
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE'
           },
-          localId:{
+          local_id:{
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {
-              model: 'locaisDeColeta',
+              model: 'locais_de_coleta',
               key: 'id'
             },
             onUpdate: 'CASCADE',
@@ -45,11 +45,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+      await queryInterface.dropTable('locais_de_usuarios');
   }
 };

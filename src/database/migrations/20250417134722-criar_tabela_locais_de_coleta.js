@@ -5,7 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     
     await queryInterface.createTable(
-      'locaisDeColeta',
+      'locais_de_coleta',
       {
         id:{
           primaryKey: true,
@@ -68,7 +68,7 @@ module.exports = {
 
   async down (queryInterface, Sequelize) {   
 
-    await queryInterface.dropTable('locaisDeColeta');
+    await queryInterface.dropTable('locais_de_coleta');
 
   }
 };

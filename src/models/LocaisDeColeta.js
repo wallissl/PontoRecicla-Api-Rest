@@ -2,7 +2,7 @@ const {DataTypes} = require('sequelize');
 
 const connection = require('../database/connection');
 
-const LocaisDeColeta = connection.define('locaisDeColeta',
+const LocaisDeColeta = connection.define('locais_de_coleta',
     {
         nome_do_local:{
             type: DataTypes.STRING,
@@ -47,8 +47,7 @@ const LocaisDeColeta = connection.define('locaisDeColeta',
     },
     {
         underscored: true,
-        modelName: 'LocaisDeColeta',
-        tableName: 'locaisDeColeta',
+       
     }
 );
 
