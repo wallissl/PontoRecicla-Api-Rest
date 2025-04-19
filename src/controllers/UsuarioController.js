@@ -1,10 +1,9 @@
-const { setUsuarioLogado } = require('../controllers/authMocks'); // Só Teste
-
 const { Op } = require('sequelize');
 const Usuario = require('../models/Usuario'); // Importa o modelo de usuários. O modelo é importado para ser usado no controller. O modelo é usado para fazer operações no banco de dados, como criar, ler, atualizar e deletar registros.
 
-const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Expressão regular para validar o email. O regex é usado para validar o email. O regex é uma expressão regular que valida o formato do email
+const {compareSync} = require('bcryptjs'); // Importa o compareSync do bcrypt, que é uma biblioteca para criptografar senhas. O compareSync é usado para comparar a senha digitada pelo usuário com a senha armazenada no banco de dados. O compareSync recebe a senha digitada pelo usuário e a senha armazenada no banco de dados e retorna true se as senhas forem iguais ou false se forem diferentes.
 
+const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Expressão regular para validar o email. O regex é usado para validar o email. O regex é uma expressão regular que valida o formato do email
 
 
 class UsuarioController{
@@ -49,13 +48,6 @@ class UsuarioController{
 
             dados.data_nascimento = `${ano}-${mes}-${dia}`; // Formata a data de nascimento para o formato YYYY-MM-DD. O formato da data é alterado para o formato YYYY-MM-DD, que é o formato aceito pelo banco de dados. O operador de template string é usado para criar uma string com os valores das variáveis.
 
-
-
-
-
-
-
-
             const usuario = await Usuario.create({ // Cria um novo usuário no banco de dados. O create é um método do sequelize que cria um novo registro no banco de dados. O método recebe um objeto com os dados do usuário.
 
                 ...dados, // Espalha os dados recebidos no corpo da requisição. O operador spread é usado para espalhar os dados do objeto em um novo objeto. Isso é útil para evitar repetir o nome dos campos do objeto.
@@ -95,18 +87,16 @@ class UsuarioController{
         }
 
      /*    const senhaCorreta = await usuario.checkPassword(dados.senha); */ // Verifica se a senha está correta. O método checkPassword é um método do modelo de usuários que verifica se a senha está correta. O método recebe a senha digitada pelo usuário e compara com a senha armazenada no banco de dados.
-        const senhaCorreta = await Usuario.findOne({
-            where: {
-                senha: dados.senha,
-            }
-        });
+        const senhaCorreta = compareSync(
+            dados.senha, // Senha digitada pelo usuário
+            usuario.senha // Senha armazenada no banco de dados
+
+        )
 
         if(!senhaCorreta){
             return res.status(404).json({message: 'Senha incorreta!'}); 
 
         }
-
-        setUsuarioLogado(usuario.id); // Chama a função setUsuarioLogado para definir o usuário logado. A função é responsável por definir o usuário logado na aplicação. A função é chamada para que o usuário possa ser identificado na aplicação.
 
         res.status(200).json({message: 'Login realizado com sucesso!', "usuarioId": usuario.id}); // Retorna uma resposta de sucesso com o status 200 e uma mensagem de sucesso. O status 200 indica que a requisição foi bem sucedida. A mensagem é enviada no formato json.
 
