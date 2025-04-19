@@ -3,8 +3,6 @@ const UsuarioController = require('../controllers/UsuarioController'); // Import
 
 const usuarioRoutes = new Router() // Cria uma nova instância do Router
 
-
-
 // usuarioRoutes.get('/', ) // Rota para listar todos os usuários
 // usuarioRoutes.get('/:id', ) // Rota para listar um usuário específico
 

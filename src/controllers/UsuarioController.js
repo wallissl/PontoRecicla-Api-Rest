@@ -1,3 +1,5 @@
+const { setUsuarioLogado } = require('../controllers/authMocks'); // Só Teste
+
 const { Op } = require('sequelize');
 const Usuario = require('../models/Usuario'); // Importa o modelo de usuários. O modelo é importado para ser usado no controller. O modelo é usado para fazer operações no banco de dados, como criar, ler, atualizar e deletar registros.
 
@@ -100,11 +102,13 @@ class UsuarioController{
         });
 
         if(!senhaCorreta){
-            return res.status(404).json({message: 'Senha incorreta!'}); // 
+            return res.status(404).json({message: 'Senha incorreta!'}); 
 
         }
 
-        res.status(200).json({message: 'Login realizado com sucesso!',})
+        setUsuarioLogado(usuario.id); // Chama a função setUsuarioLogado para definir o usuário logado. A função é responsável por definir o usuário logado na aplicação. A função é chamada para que o usuário possa ser identificado na aplicação.
+
+        res.status(200).json({message: 'Login realizado com sucesso!', "usuarioId": usuario.id}); // Retorna uma resposta de sucesso com o status 200 e uma mensagem de sucesso. O status 200 indica que a requisição foi bem sucedida. A mensagem é enviada no formato json.
 
     }// Método para fazer login. O método é responsável por fazer o login do usuário. O método recebe os dados do usuário e verifica se o usuário existe no banco de dados. Se o usuário existir, o método retorna os dados do usuário. Se o usuário não existir, o método retorna uma mensagem de erro.
 }
