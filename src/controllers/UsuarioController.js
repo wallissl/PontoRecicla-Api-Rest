@@ -3,7 +3,9 @@ const Usuario = require('../models/Usuario'); // Importa o modelo de usuários. 
 
 const {compareSync} = require('bcryptjs'); // Importa o compareSync do bcrypt, que é uma biblioteca para criptografar senhas. O compareSync é usado para comparar a senha digitada pelo usuário com a senha armazenada no banco de dados. O compareSync recebe a senha digitada pelo usuário e a senha armazenada no banco de dados e retorna true se as senhas forem iguais ou false se forem diferentes.
 
-const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Expressão regular para validar o email. O regex é usado para validar o email. O regex é uma expressão regular que valida o formato do email
+const {sign} = require('jsonwebtoken'); // Importa o sign do jsonwebtoken, que é uma biblioteca para gerar tokens JWT. O sign é usado para gerar um token JWT com os dados do usuário. O token é usado para autenticar o usuário na aplicação. O token é gerado com os dados do usuário e uma chave secreta. A chave secreta é usada para assinar o token e garantir que o token não possa ser alterado por terceiros.
+
+const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Expressão regular para validar o email. O regex é usado para validar o email. O regex é uma expressão regular que valida o formato do email.
 
 
 class UsuarioController{
@@ -86,21 +88,32 @@ class UsuarioController{
             return res.status(404).json({message: 'Conta não encontrada!'});
         }
 
-     /*    const senhaCorreta = await usuario.checkPassword(dados.senha); */ // Verifica se a senha está correta. O método checkPassword é um método do modelo de usuários que verifica se a senha está correta. O método recebe a senha digitada pelo usuário e compara com a senha armazenada no banco de dados.
         const senhaCorreta = compareSync(
             dados.senha, // Senha digitada pelo usuário
             usuario.senha // Senha armazenada no banco de dados
-
         )
 
         if(!senhaCorreta){
             return res.status(404).json({message: 'Senha incorreta!'}); 
-
         }
 
-        res.status(200).json({message: 'Login realizado com sucesso!', "usuarioId": usuario.id}); // Retorna uma resposta de sucesso com o status 200 e uma mensagem de sucesso. O status 200 indica que a requisição foi bem sucedida. A mensagem é enviada no formato json.
+        const token = sign({
+            id: usuario.id, // ID do usuário
+            email: usuario.email, // Email do usuário
+        },
+            process.env.SECRET_JWT,
+            {
+                expiresIn: '1d', // Tempo de expiração do token. O token expira em 1 dia. O tempo de expiração é definido em segundos ou em uma string com a unidade de tempo (s, m, h, d).
+            }
+        );
 
-    }// Método para fazer login. O método é responsável por fazer o login do usuário. O método recebe os dados do usuário e verifica se o usuário existe no banco de dados. Se o usuário existir, o método retorna os dados do usuário. Se o usuário não existir, o método retorna uma mensagem de erro.
+        res.status(200).json({
+            token, // Token gerado para o usuário. O token é enviado na resposta para o cliente. O cliente deve armazenar o token e enviá-lo em todas as requisições que precisam de autenticação.
+            nome: usuario.nome, // Nome do usuário. O nome do usuário é enviado na resposta para o cliente. O cliente pode usar o nome do usuário para exibir na interface.
+            message: 'Login realizado com sucesso!'
+        }); // Retorna uma resposta de sucesso com o status 200 e uma mensagem de sucesso. O status 200 indica que a requisição foi bem sucedida. A mensagem é enviada no formato json.
+
+    } // Método para fazer login. O método é responsável por fazer o login do usuário. O método recebe os dados do usuário e verifica se o usuário existe no banco de dados. Se o usuário existir, o método retorna os dados do usuário. Se o usuário não existir, o método retorna uma mensagem de erro.
 }
 
 module.exports = new UsuarioController(); // Exporta uma nova instância do controller de usuários. O controller é exportado para ser usado em outros arquivos, como o router. A instância é criada para que o controller possa ser usado como um singleton, ou seja, uma única instância do controller é criada e usada em toda a aplicação.
