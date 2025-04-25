@@ -22,10 +22,7 @@ class LocaisDeColetaController{
                 ...dados,
             });
 
-            await LocaisDeUsuarios.create({
-                usuario_id: usuarioLogadoId,
-                local_id: LocalDeColeta.id,
-            });
+           
 
             
            
