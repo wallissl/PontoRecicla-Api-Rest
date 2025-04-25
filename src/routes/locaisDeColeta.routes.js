@@ -7,6 +7,8 @@ console.log(LocaisDeColetaController)
 
 const locaisDeColetaRoutes = new Router()
 
-locaisDeColetaRoutes.post('/', LocaisDeColetaController.criarLocalDeColeta); // Rota para criar um novo local de coleta. O método post é usado para criar um novo registro no banco de dados. O método recebe a rota e o controller que será responsável por criar o local de coleta.
+locaisDeColetaRoutes.post('/cadastrar', LocaisDeColetaController.criarLocalDeColeta); // Rota para criar um novo local de coleta. O método post é usado para criar um novo registro no banco de dados. O método recebe a rota e o controller que será responsável por criar o local de coleta.
+
+locaisDeColetaRoutes.get('/listar', LocaisDeColetaController.listarLocaisDeColeta); // Rota para listar todos os locais de coleta. O método get é usado para listar todos os registros do banco de dados. O método recebe a rota e o controller que será responsável por listar os locais de coleta.
 
 module.exports = locaisDeColetaRoutes;

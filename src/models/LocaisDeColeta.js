@@ -1,6 +1,9 @@
 const {DataTypes} = require('sequelize');
 
+
 const connection = require('../database/connection');
+
+/* const LocaisDeUsuarios = require('./LocaisDeUsuarios'); // Importa o modelo de locais de usuários. O modelo é importado para ser usado no relacionamento entre os modelos. O modelo é usado para fazer operações no banco de dados, como criar, ler, atualizar e deletar registros. */
 
 const LocaisDeColeta = connection.define('locais_de_coleta',
     {
@@ -48,7 +51,13 @@ const LocaisDeColeta = connection.define('locais_de_coleta',
     {
         underscored: true,
        
-    }
+    },
+   
 );
+
+/* LocaisDeColeta.hasMany(LocaisDeUsuarios, {
+    foreignKey: 'local_id',
+    as: 'usuarios', // Nome do alias para o relacionamento
+}); */
 
 module.exports = LocaisDeColeta; 

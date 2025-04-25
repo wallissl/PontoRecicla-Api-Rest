@@ -1,11 +1,6 @@
-const { getUsuarioLogado } = require('../controllers/authMocks'); // Só Teste
-
 const LocaisDeColeta = require('../models/LocaisDeColeta');
 
 const LocaisDeUsuarios = require('../models/LocaisDeUsuarios');
-
-const Usuario = require('../models/Usuario');
-
 
 
 class LocaisDeColetaController{
@@ -15,25 +10,47 @@ class LocaisDeColetaController{
         try {
 
             const dados = req.body;
-            console.log(req.body);
-            const usuarioLogadoId = getUsuarioLogado(); // Pega o id do usuário logado. O id do usuário logado é pego do mock de autenticação. O id do usuário logado é usado para criar o local de coleta.
            
             const LocalDeColeta = await LocaisDeColeta.create({
                 ...dados,
             });
-
-           
-
             
-           
+            await LocaisDeUsuarios.create({
+                usuario_id: req.usuarioId, // ID do usuário logado
+                local_id: LocalDeColeta.id, // ID do local de coleta criado
+            });
 
-             res.status(201).json({ nome: LocalDeColeta.nome_do_local});
+             res.status(201).json({ nome: LocalDeColeta.nome_do_local, id: LocalDeColeta.id });
         } catch (error) {
             console.error('Erro ao criar local de coleta:', error);
              res.status(500).json({ error: 'Erro ao criar local de coleta' });
         }
+    }
 
-       
+    async listarLocaisDeColeta(req, res) {
+        try {
+            const locais = await LocaisDeUsuarios.findAll({
+                
+                where: {
+                    usuario_id: req.usuarioId // ID do usuário logado
+                },
+                include: [
+                    {
+                        model: LocaisDeColeta,
+                        as: 'local', // Nome do alias para o relacionamento
+                        attributes: ['id', 'nome_do_local', 'descricao'],
+                    },
+                ],
+                });
+
+            const resposta = locais.map( item => 
+                item.local);
+            
+            res.status(200).json(resposta);
+        } catch (error) {
+            console.error('Erro ao listar locais de coleta:', error);
+            res.status(500).json({ error: 'Erro ao listar locais de coleta' });
+        }
     }
 }
 

@@ -20,7 +20,7 @@ module.exports = {
               key: 'id'
             },
             onUpdate: 'CASCADE',
-            onDelete: 'CASCADE'
+            onDelete: 'RESTRICT'
           },
           local_id:{
             type: Sequelize.INTEGER,
