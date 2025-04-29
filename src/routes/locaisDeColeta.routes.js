@@ -11,4 +11,8 @@ locaisDeColetaRoutes.post('/cadastrar', LocaisDeColetaController.criarLocalDeCol
 
 locaisDeColetaRoutes.get('/listar', LocaisDeColetaController.listarLocaisDeColeta); // Rota para listar todos os locais de coleta. O método get é usado para listar todos os registros do banco de dados. O método recebe a rota e o controller que será responsável por listar os locais de coleta.
 
+locaisDeColetaRoutes.get('/local/:local_id', LocaisDeColetaController.detalharLocalDeColeta); // Rota para listar os detalhes de um local de coleta. O método get é usado para listar os detalhes de um registro do banco de dados. O método recebe a rota e o controller que será responsável por listar os detalhes do local de coleta.
+
+locaisDeColetaRoutes.delete('/local/:local_id', LocaisDeColetaController.deletarLocalDeColeta); // Rota para deletar um local de coleta. O método delete é usado para deletar um registro do banco de dados. O método recebe a rota e o controller que será responsável por deletar o local de coleta.
+
 module.exports = locaisDeColetaRoutes;
