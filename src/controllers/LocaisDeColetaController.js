@@ -111,11 +111,46 @@ class LocaisDeColetaController{
 
             await LocaisDeColeta.destroy({ where: { id: local_id } }); // Deleta o local de coleta
             
-            response.status(204).json({ message: 'Local de coleta deletado com sucesso' });
+            res.status(204).json({ message: 'Local de coleta deletado com sucesso' });
             
         } catch (error) {
             console.error('Erro ao deletar local de coleta:', error);
             res.status(500).json({ error: 'Erro ao deletar local de coleta' });
+            
+        }
+    }
+
+    async atualizarLocalDeColeta(req, res){
+
+        try {
+            const {local_id} = req.params; // ID do local de coleta a ser atualizado
+            const dados = req.body; // Dados para atualização
+
+            const relacao = await LocaisDeUsuarios.findOne({
+                where:{
+                    usuario_id: req.usuarioId, 
+                    local_id: local_id,
+                },
+                include: [
+                    {
+                        model: LocaisDeColeta,
+                        as: 'local',
+                        attributes: ['id'],
+                    },
+                ],
+            });
+
+            if(!relacao) {
+                return res.status(404).json({ error: 'Não existe um local de coleta com esse ID para ser atualizado' });
+            }
+
+            await LocaisDeColeta.update(dados, { where: { id: local_id } }); // Atualiza o local de coleta
+            
+            res.status(200).json({ message: 'Local de coleta atualizado com sucesso' });
+            
+        } catch (error) {
+            console.error('Erro ao atualizar local de coleta:', error);
+            res.status(500).json({ error: 'Erro ao atualizar local de coleta' });
             
         }
     }

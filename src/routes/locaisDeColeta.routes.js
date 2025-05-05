@@ -15,4 +15,6 @@ locaisDeColetaRoutes.get('/local/:local_id', LocaisDeColetaController.detalharLo
 
 locaisDeColetaRoutes.delete('/local/:local_id', LocaisDeColetaController.deletarLocalDeColeta); // Rota para deletar um local de coleta. O método delete é usado para deletar um registro do banco de dados. O método recebe a rota e o controller que será responsável por deletar o local de coleta.
 
+locaisDeColetaRoutes.put('/atualizar/:local_id', LocaisDeColetaController.atualizarLocalDeColeta); // Rota para atualizar um local de coleta. O método put é usado para atualizar um registro do banco de dados. O método recebe a rota e o controller que será responsável por atualizar o local de coleta.
+
 module.exports = locaisDeColetaRoutes;
