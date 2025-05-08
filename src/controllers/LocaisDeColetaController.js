@@ -2,6 +2,8 @@ const LocaisDeColeta = require('../models/LocaisDeColeta');
 
 const LocaisDeUsuarios = require('../models/LocaisDeUsuarios');
 
+const axios = require('axios'); // Importa o axios para fazer requisições HTTP
+
 
 class LocaisDeColetaController{
 
@@ -154,6 +156,61 @@ class LocaisDeColetaController{
             
         }
     }
+
+    async linkDoMaps(req, res) {
+        const { local_id } = req.params;
+
+        try {
+            // Verifica se o local pertence ao usuário logado
+            const relacao = await LocaisDeUsuarios.findOne({
+                where: {
+                    usuario_id: req.usuarioId,
+                    local_id: local_id
+                },
+                include: [
+                    {
+                        model: LocaisDeColeta,
+                        as: 'local',
+                        attributes: ['cep']
+                    }
+                ]
+            });
+
+            if (!relacao) {
+                return res.status(404).json({ error: 'Local não encontrado ou não pertence ao usuário.' });
+            }
+
+            const cep = relacao.local.cep;
+
+            // Consulta a API do Nominatim
+            const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+                params: {
+                    format: 'json',
+                    country: 'Brazil',
+                    postalcode: cep,
+                    limit: 1
+                },
+                headers: {
+                    'User-Agent': 'seuemail@exemplo.com' // Use seu e-mail ou nome da aplicação
+                }
+            });
+
+            if (!response.data || response.data.length === 0) {
+                return res.status(404).json({ error: 'Localização não encontrada com o CEP informado.' });
+            }
+
+            const { lat, lon } = response.data[0];
+
+            const googleMapsLink = `https://www.google.com/maps?q=${lat},${lon}`;
+
+            return res.status(200).json({ link: googleMapsLink });
+
+        } catch (error) {
+            console.error('Erro ao gerar link do Google Maps:', error.message);
+            return res.status(500).json({ error: 'Erro ao gerar link do Google Maps' });
+        }
+    } // Teste 01
+
 }
 
 module.exports = new LocaisDeColetaController();
