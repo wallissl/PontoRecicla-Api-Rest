@@ -190,9 +190,7 @@ class LocaisDeColetaController{
                     postalcode: cep,
                     limit: 1
                 },
-                headers: {
-                    'User-Agent': 'seuemail@exemplo.com' // Use seu e-mail ou nome da aplicação
-                }
+                
             });
 
             if (!response.data || response.data.length === 0) {
@@ -209,7 +207,7 @@ class LocaisDeColetaController{
             console.error('Erro ao gerar link do Google Maps:', error.message);
             return res.status(500).json({ error: 'Erro ao gerar link do Google Maps' });
         }
-    } // Teste 01
+    }
 
 }
 
