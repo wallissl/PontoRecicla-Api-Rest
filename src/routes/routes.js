@@ -10,7 +10,8 @@ const routes = new Router()
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./doc.swagger.json');
-routes.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); // Configura o Swagger UI para a documentação da API
+
+routes.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument,)); // Configura o Swagger UI para a documentação da API
 
 
 

@@ -27,7 +27,7 @@
         "description": "Endpoint para criar um novo usuário",
         "parameters": [
           {
-            "name": "criarUsuario",
+            "name": "Cadastro de usuario",
             "in": "body",
             "description": "Dados do usuário a ser criado",
             "required": true,
@@ -36,15 +36,31 @@
               "properties": {
                 "nome": {
                   "type": "string",
-                  "example": "Nome do Usuário"
+                  "example": "Kami Cat da Silva"
+                },
+                "sexo": {
+                  "type": "string",
+                  "example": "Feminino"
+                },
+                "cpf": {
+                  "type": "string",
+                  "example": "12385552905"
+                },
+                "endereco": {
+                  "type": "string",
+                  "example": "R. Alfredo, 123"
                 },
                 "email": {
                   "type": "string",
-                  "example": "seuEmail@gmail.com"
+                  "example": "kami@email.com"
                 },
                 "senha": {
                   "type": "string",
-                  "example": "senha123"
+                  "example": "minhasenha123"
+                },
+                "data_nascimento": {
+                  "type": "string",
+                  "example": "01-02-2021"
                 }
               }
             }
@@ -71,20 +87,20 @@
         "description": "Endpoint para fazer login",
         "parameters": [
           {
-            "name": "logarUsuario",
+            "name": "Login de usuario",
             "in": "body",
-            "description": "Dados do usuário a ser criado",
+            "description": "Insira os dados para realizar o login de usuário",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "email": {
                   "type": "string",
-                  "example": "seuEmail@gmail.com"
+                  "example": "kami@email.com"
                 },
                 "senha": {
                   "type": "string",
-                  "example": "sua senha"
+                  "example": "minhasenha123"
                 }
               }
             }
@@ -102,12 +118,66 @@
     },
     "/locaisDeColeta/cadastrar": {
       "post": {
-        "description": "",
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para criar um novo local de coleta",
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "Cadastrar locais de coleta",
+            "in": "body",
+            "description": "Dados do local de coleta a ser criado",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome_do_local": {
+                  "type": "string",
+                  "example": "Eco Ponto"
+                },
+                "descricao": {
+                  "type": "string",
+                  "example": "Local para coleta de materiais recicláveis"
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "São Paulo"
+                },
+                "cidade": {
+                  "type": "string",
+                  "example": "São Paulo"
+                },
+                "cep": {
+                  "type": "string",
+                  "example": "12345-678"
+                },
+                "bairro": {
+                  "type": "string",
+                  "example": "Centro"
+                },
+                "rua": {
+                  "type": "string",
+                  "example": "Rua das Flores"
+                },
+                "numero": {
+                  "type": "string",
+                  "example": "123"
+                },
+                "coordenadas": {
+                  "type": "string",
+                  "example": "-23.5505,-46.6333"
+                },
+                "materiais_aceitos": {
+                  "type": "string",
+                  "example": "papel, plástico, vidro"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -125,12 +195,66 @@
     },
     "/locaisDeColeta/listar": {
       "get": {
-        "description": "",
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para criar um novo local de coleta",
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "Cadastrar locais de coleta",
+            "in": "body",
+            "description": "Dados do local de coleta a ser criado",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome_do_local": {
+                  "type": "string",
+                  "example": "Eco Ponto"
+                },
+                "descricao": {
+                  "type": "string",
+                  "example": "Local para coleta de materiais recicláveis"
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "São Paulo"
+                },
+                "cidade": {
+                  "type": "string",
+                  "example": "São Paulo"
+                },
+                "cep": {
+                  "type": "string",
+                  "example": "12345-678"
+                },
+                "bairro": {
+                  "type": "string",
+                  "example": "Centro"
+                },
+                "rua": {
+                  "type": "string",
+                  "example": "Rua das Flores"
+                },
+                "numero": {
+                  "type": "string",
+                  "example": "123"
+                },
+                "coordenadas": {
+                  "type": "string",
+                  "example": "-23.5505,-46.6333"
+                },
+                "materiais_aceitos": {
+                  "type": "string",
+                  "example": "papel, plástico, vidro"
+                }
+              }
+            }
           }
         ],
         "responses": {

@@ -9,18 +9,22 @@ const usuarioRoutes = new Router() // Cria uma nova instância do Router
 usuarioRoutes.post('/cadastrar', UsuarioController.criarConta
 
     /*
-    #swagger.tags = ['Usuários'],
-    #swagger.description = 'Endpoint para criar um novo usuário',
-    #swagger.parameters['criarUsuario'] = {
-        in: 'body',
-        description: 'Dados do usuário a ser criado',
-        required: true,
-        schema: {
-            nome: "Nome do Usuário",
-            email: "seuEmail@gmail.com",
-            senha: "senha123",
-        }   
-    }
+        #swagger.tags = ['Usuários'],
+        #swagger.description = 'Endpoint para criar um novo usuário',
+        #swagger.parameters['Cadastro de usuario'] = {
+            in: 'body',
+            description: 'Dados do usuário a ser criado',
+            required: true,
+            schema: {
+                "nome": "Kami Cat da Silva",
+                "sexo": "Feminino",
+                "cpf": "12385552905",
+                "endereco": "R. Alfredo, 123",
+                "email": "kami@email.com",
+                "senha": "minhasenha123",
+                "data_nascimento": "01-02-2021"
+            }
+        }
     */
    
 ) // Rota para criar um novo usuário
@@ -33,13 +37,13 @@ usuarioRoutes.post('/login', UsuarioController.login
     /*
     #swagger.tags = ['Usuários'],
     #swagger.description = 'Endpoint para fazer login',
-    #swagger.parameters['logarUsuario'] = {
+    #swagger.parameters['Login de usuario'] = {
         in: 'body',
-        description: 'Dados do usuário a ser criado',
+        description: 'Insira os dados para realizar o login de usuário',
         required: true,
         schema: {
-            email: "seuEmail@gmail.com",
-            senha: "sua senha",
+            email: "kami@email.com",
+            senha: "minhasenha123",
         }   
     }
     */
