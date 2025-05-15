@@ -63,8 +63,41 @@ locaisDeColetaRoutes.delete('/local/:local_id', LocaisDeColetaController.deletar
 
 ); // Rota para deletar um local de coleta. O método delete é usado para deletar um registro do banco de dados. O método recebe a rota e o controller que será responsável por deletar o local de coleta.
 
-locaisDeColetaRoutes.put('/atualizar/:local_id', LocaisDeColetaController.atualizarLocalDeColeta); // Rota para atualizar um local de coleta. O método put é usado para atualizar um registro do banco de dados. O método recebe a rota e o controller que será responsável por atualizar o local de coleta.
+locaisDeColetaRoutes.put('/atualizar/:local_id', LocaisDeColetaController.atualizarLocalDeColeta
 
-locaisDeColetaRoutes.get('/local/maps/:local_id', LocaisDeColetaController.linkDoMaps); // Rota para detalhar um local de coleta. O método get é usado para listar os detalhes de um registro do banco de dados. O método recebe a rota e o controller que será responsável por listar os detalhes do local de coleta.
+    /*
+        #swagger.tags = ['Locais de Coleta'],
+        #swagger.description = 'Endpoint para ATUALIZAR um local de coleta',
+        #swagger.parameters['Atualizar locais de coleta'] = {
+            in: 'body',
+            description: 'Dados do local de coleta a ser atualizado',
+            required: true,
+            schema: {
+                nome_do_local: "Recicla +",
+                descricao: "Local Muito Massa",
+                estado: "SP",
+                cidade: "São Paulo",
+                cep: "88020010",
+                bairro: "Centro",
+                rua: "Rua da Sustentabilidade",
+                numero: "123",
+                coordenadas: "1",
+                materiais_aceitos: "Plástico, Papel, Vidro, Metal"
+            }   
+        }
+        
+    */
+
+); // Rota para atualizar um local de coleta. O método put é usado para atualizar um registro do banco de dados. O método recebe a rota e o controller que será responsável por atualizar o local de coleta.
+
+locaisDeColetaRoutes.get('/local/maps/:local_id', LocaisDeColetaController.linkDoMaps
+
+    /*
+        #swagger.tags = ['Locais de Coleta'],
+        #swagger.description = 'Endpoint para LISTAR todos os locais cadastrados',
+        
+    */
+
+); // Rota para detalhar um local de coleta. O método get é usado para listar os detalhes de um registro do banco de dados. O método recebe a rota e o controller que será responsável por listar os detalhes do local de coleta.
 
 module.exports = locaisDeColetaRoutes;

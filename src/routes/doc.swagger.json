@@ -116,12 +116,33 @@
         }
       }
     },
+    "/usuarios/atualizar/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/locaisDeColeta/cadastrar": {
       "post": {
         "tags": [
           "Locais de Coleta"
         ],
-        "description": "Endpoint para criar um novo local de coleta",
+        "description": "Endpoint para CRIAR um novo local de coleta",
         "parameters": [
           {
             "name": "authorization",
@@ -198,63 +219,12 @@
         "tags": [
           "Locais de Coleta"
         ],
-        "description": "Endpoint para criar um novo local de coleta",
+        "description": "Endpoint para LISTAR todos os locais cadastrados",
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
-          },
-          {
-            "name": "Cadastrar locais de coleta",
-            "in": "body",
-            "description": "Dados do local de coleta a ser criado",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "nome_do_local": {
-                  "type": "string",
-                  "example": "Eco Ponto"
-                },
-                "descricao": {
-                  "type": "string",
-                  "example": "Local para coleta de materiais recicláveis"
-                },
-                "estado": {
-                  "type": "string",
-                  "example": "São Paulo"
-                },
-                "cidade": {
-                  "type": "string",
-                  "example": "São Paulo"
-                },
-                "cep": {
-                  "type": "string",
-                  "example": "12345-678"
-                },
-                "bairro": {
-                  "type": "string",
-                  "example": "Centro"
-                },
-                "rua": {
-                  "type": "string",
-                  "example": "Rua das Flores"
-                },
-                "numero": {
-                  "type": "string",
-                  "example": "123"
-                },
-                "coordenadas": {
-                  "type": "string",
-                  "example": "-23.5505,-46.6333"
-                },
-                "materiais_aceitos": {
-                  "type": "string",
-                  "example": "papel, plástico, vidro"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -272,7 +242,10 @@
     },
     "/locaisDeColeta/local/{local_id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para LISTAR UM LOCAL de coleta detalhadamente",
         "parameters": [
           {
             "name": "local_id",
@@ -302,7 +275,10 @@
         }
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para DELETAR locais cadastrados por ID",
         "parameters": [
           {
             "name": "local_id",
@@ -334,7 +310,10 @@
     },
     "/locaisDeColeta/atualizar/{local_id}": {
       "put": {
-        "description": "",
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para ATUALIZAR um local de coleta",
         "parameters": [
           {
             "name": "local_id",
@@ -346,6 +325,57 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "Atualizar locais de coleta",
+            "in": "body",
+            "description": "Dados do local de coleta a ser atualizado",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome_do_local": {
+                  "type": "string",
+                  "example": "Recicla +"
+                },
+                "descricao": {
+                  "type": "string",
+                  "example": "Local Muito Massa"
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "SP"
+                },
+                "cidade": {
+                  "type": "string",
+                  "example": "São Paulo"
+                },
+                "cep": {
+                  "type": "string",
+                  "example": "88020010"
+                },
+                "bairro": {
+                  "type": "string",
+                  "example": "Centro"
+                },
+                "rua": {
+                  "type": "string",
+                  "example": "Rua da Sustentabilidade"
+                },
+                "numero": {
+                  "type": "string",
+                  "example": "123"
+                },
+                "coordenadas": {
+                  "type": "string",
+                  "example": "1"
+                },
+                "materiais_aceitos": {
+                  "type": "string",
+                  "example": "Plástico, Papel, Vidro, Metal"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -366,7 +396,10 @@
     },
     "/locaisDeColeta/local/maps/{local_id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para LISTAR todos os locais cadastrados",
         "parameters": [
           {
             "name": "local_id",

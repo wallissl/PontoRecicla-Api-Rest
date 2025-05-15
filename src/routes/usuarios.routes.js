@@ -1,6 +1,8 @@
 const {Router} = require('express'); // Importa o Router do express
 const UsuarioController = require('../controllers/UsuarioController'); // Importa o controller de usuários. O controller é responsável por lidar com as requisições e respostas da aplicação. O controller é usado para separar a lógica de negócio da aplicação das rotas.
 
+const  validaToken = require('../middlewares/validaToken'); 
+
 const usuarioRoutes = new Router() // Cria uma nova instância do Router
 
 // usuarioRoutes.get('/', ) // Rota para listar todos os usuários
@@ -50,5 +52,8 @@ usuarioRoutes.post('/login', UsuarioController.login
 
 ) // Rota para fazer login. O login é feito através de um POST para a rota /login. O controller de usuários é responsável por lidar com a lógica de login.
 
+usuarioRoutes.put('/atualizar/:id', validaToken, UsuarioController.atualizarUsuario)
+
+usuarioRoutes.delete('/deletar/:id', validaToken, UsuarioController.deletarUsuario)
 
 module.exports = usuarioRoutes // Exporta as rotas de usuários. As rotas são exportadas para serem usadas no arquivo de rotas principal, onde todas as rotas da aplicação são registradas.
