@@ -52,8 +52,36 @@ usuarioRoutes.post('/login', UsuarioController.login
 
 ) // Rota para fazer login. O login é feito através de um POST para a rota /login. O controller de usuários é responsável por lidar com a lógica de login.
 
-usuarioRoutes.put('/atualizar/:id', validaToken, UsuarioController.atualizarUsuario)
+usuarioRoutes.put('/atualizar/:id', validaToken, UsuarioController.atualizarUsuario
 
-usuarioRoutes.delete('/deletar/:id', validaToken, UsuarioController.deletarUsuario)
+    /*
+    #swagger.tags = ['Usuários'],
+    #swagger.description = 'Endpoint para atualizar dados do usuário',
+    #swagger.parameters['Atualizar dados'] = {
+        in: 'body',
+        description: 'Insira apenas os dados que deseja atualizar',
+        required: true,
+        schema: {
+            nome: "",
+            sexo: "",
+            cpf: "",
+            endereco: "",
+            email: "",
+            senha: "",
+            data_nascimento: "",
+        }   
+    }
+    */
+)
+
+usuarioRoutes.delete('/deletar/:id', validaToken, UsuarioController.deletarUsuario
+
+    /*
+    #swagger.tags = ['Usuários'],
+    #swagger.description = 'Endpoint para deletar o usuário (Para deletar o usuário, é necessário excluir os locais de coleta associados a ele primeiro)'
+    
+    */
+
+)
 
 module.exports = usuarioRoutes // Exporta as rotas de usuários. As rotas são exportadas para serem usadas no arquivo de rotas principal, onde todas as rotas da aplicação são registradas.
