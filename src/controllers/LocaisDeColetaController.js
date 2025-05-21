@@ -69,7 +69,7 @@ class LocaisDeColetaController{
                     {
                         model: LocaisDeColeta,
                         as: 'local', // Nome do alias para o relacionamento
-                        attributes: ['id', 'nome_do_local', 'descricao'],
+                        attributes: ['id', 'nome_do_local', 'descricao', 'estado', 'cidade', 'cep', 'bairro', 'rua', 'numero', 'coordenadas', 'materiais_aceitos'],
                     },
                 ],
             });
