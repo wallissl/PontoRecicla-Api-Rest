@@ -1,10 +1,14 @@
-const { setUsuarioLogado } = require('../controllers/authMocks'); // Só Teste
-
 const { Op } = require('sequelize');
 const Usuario = require('../models/Usuario'); // Importa o modelo de usuários. O modelo é importado para ser usado no controller. O modelo é usado para fazer operações no banco de dados, como criar, ler, atualizar e deletar registros.
 
-const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Expressão regular para validar o email. O regex é usado para validar o email. O regex é uma expressão regular que valida o formato do email
+const LocaisDeUsuarios = require('../models/LocaisDeUsuarios'); // Importa o modelo de locais de coleta. O modelo é importado para ser usado no controller. O modelo é usado para fazer operações no banco de dados, como criar, ler, atualizar e deletar registros.
 
+const moment = require('moment'); // Importa o moment, que é uma biblioteca para manipulação de datas. O moment é usado para formatar e validar datas. O moment é usado para formatar a data de nascimento do usuário antes de salvar no banco de dados.
+const {compareSync} = require('bcryptjs'); // Importa o compareSync do bcrypt, que é uma biblioteca para criptografar senhas. O compareSync é usado para comparar a senha digitada pelo usuário com a senha armazenada no banco de dados. O compareSync recebe a senha digitada pelo usuário e a senha armazenada no banco de dados e retorna true se as senhas forem iguais ou false se forem diferentes.
+
+const {sign} = require('jsonwebtoken'); // Importa o sign do jsonwebtoken, que é uma biblioteca para gerar tokens JWT. O sign é usado para gerar um token JWT com os dados do usuário. O token é usado para autenticar o usuário na aplicação. O token é gerado com os dados do usuário e uma chave secreta. A chave secreta é usada para assinar o token e garantir que o token não possa ser alterado por terceiros.
+
+const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Expressão regular para validar o email. O regex é usado para validar o email. O regex é uma expressão regular que valida o formato do email.
 
 
 class UsuarioController{
@@ -49,13 +53,6 @@ class UsuarioController{
 
             dados.data_nascimento = `${ano}-${mes}-${dia}`; // Formata a data de nascimento para o formato YYYY-MM-DD. O formato da data é alterado para o formato YYYY-MM-DD, que é o formato aceito pelo banco de dados. O operador de template string é usado para criar uma string com os valores das variáveis.
 
-
-
-
-
-
-
-
             const usuario = await Usuario.create({ // Cria um novo usuário no banco de dados. O create é um método do sequelize que cria um novo registro no banco de dados. O método recebe um objeto com os dados do usuário.
 
                 ...dados, // Espalha os dados recebidos no corpo da requisição. O operador spread é usado para espalhar os dados do objeto em um novo objeto. Isso é útil para evitar repetir o nome dos campos do objeto.
@@ -94,23 +91,115 @@ class UsuarioController{
             return res.status(404).json({message: 'Conta não encontrada!'});
         }
 
-     /*    const senhaCorreta = await usuario.checkPassword(dados.senha); */ // Verifica se a senha está correta. O método checkPassword é um método do modelo de usuários que verifica se a senha está correta. O método recebe a senha digitada pelo usuário e compara com a senha armazenada no banco de dados.
-        const senhaCorreta = await Usuario.findOne({
-            where: {
-                senha: dados.senha,
-            }
-        });
+        const senhaCorreta = compareSync(
+            dados.senha, // Senha digitada pelo usuário
+            usuario.senha // Senha armazenada no banco de dados
+        )
 
         if(!senhaCorreta){
             return res.status(404).json({message: 'Senha incorreta!'}); 
-
         }
 
-        setUsuarioLogado(usuario.id); // Chama a função setUsuarioLogado para definir o usuário logado. A função é responsável por definir o usuário logado na aplicação. A função é chamada para que o usuário possa ser identificado na aplicação.
+        const token = sign({
+            id: usuario.id, // ID do usuário
+            email: usuario.email, // Email do usuário
+        },
+            process.env.SECRET_JWT,
+            {
+                expiresIn: '1d', // Tempo de expiração do token. O token expira em 1 dia. O tempo de expiração é definido em segundos ou em uma string com a unidade de tempo (s, m, h, d).
+            }
+        );
 
-        res.status(200).json({message: 'Login realizado com sucesso!', "usuarioId": usuario.id}); // Retorna uma resposta de sucesso com o status 200 e uma mensagem de sucesso. O status 200 indica que a requisição foi bem sucedida. A mensagem é enviada no formato json.
+        res.status(200).json({
+            token, // Token gerado para o usuário. O token é enviado na resposta para o cliente. O cliente deve armazenar o token e enviá-lo em todas as requisições que precisam de autenticação.
+            nome: usuario.nome, // Nome do usuário. O nome do usuário é enviado na resposta para o cliente. O cliente pode usar o nome do usuário para exibir na interface.
+            message: 'Login realizado com sucesso!',
+            id: usuario.id, // ID do usuário. O ID do usuário é enviado na resposta para o cliente. O cliente pode usar o ID do usuário para identificar o usuário na interface.
+        }); // Retorna uma resposta de sucesso com o status 200 e uma mensagem de sucesso. O status 200 indica que a requisição foi bem sucedida. A mensagem é enviada no formato json.
 
-    }// Método para fazer login. O método é responsável por fazer o login do usuário. O método recebe os dados do usuário e verifica se o usuário existe no banco de dados. Se o usuário existir, o método retorna os dados do usuário. Se o usuário não existir, o método retorna uma mensagem de erro.
+    } // Método para fazer login. O método é responsável por fazer o login do usuário. O método recebe os dados do usuário e verifica se o usuário existe no banco de dados. Se o usuário existir, o método retorna os dados do usuário. Se o usuário não existir, o método retorna uma mensagem de erro.
+
+    async atualizarUsuario(req, res) {
+    try {
+        const id = req.usuarioId;
+        const usuario = await Usuario.findByPk(id);
+
+       
+        const { nome, sexo, cpf, endereco, email, senha, data_nascimento } = req.body;
+
+        // Objeto para guardar somente os campos que mudaram
+        const camposParaAtualizar = {};
+
+        if (nome && nome !== usuario.nome) camposParaAtualizar.nome = nome;
+        if (sexo && sexo !== usuario.sexo) camposParaAtualizar.sexo = sexo;
+        if (cpf && cpf !== usuario.cpf) {
+        const cpfExiste = await Usuario.findOne({ where: { cpf } });
+        if (cpfExiste && cpfExiste.id !== usuario.id) {
+            return res.status(400).json({ error: 'Este CPF já está em uso.' });
+        }
+        camposParaAtualizar.cpf = cpf;
+        }
+        if (endereco && endereco !== usuario.endereco) camposParaAtualizar.endereco = endereco;
+        if (email && email !== usuario.email) {
+        const emailExiste = await Usuario.findOne({ where: { email } });
+        if (emailExiste && emailExiste.id !== usuario.id) {
+            return res.status(400).json({ error: 'Este e-mail já está em uso.' });
+        }
+        camposParaAtualizar.email = email;
+        }
+        if (senha && senha !== usuario.senha) camposParaAtualizar.senha = senha;
+        if (data_nascimento && data_nascimento !== usuario.data_nascimento) {
+        // Converter "dd-mm-aaaa" para "aaaa-mm-dd"
+        const dataConvertida = new Date(data_nascimento.split('-').reverse().join('-'));
+        camposParaAtualizar.data_nascimento = dataConvertida;
+        }
+
+        // Se não houver nenhum campo para atualizar
+        if (Object.keys(camposParaAtualizar).length === 0) {
+        return res.status(200).json({ message: 'Nenhum dado foi modificado.' });
+        }
+
+        await usuario.update(camposParaAtualizar);
+
+        return res.status(200).json({ message: 'Usuário atualizado com sucesso.' });
+
+    }catch (error) {
+    console.error('Erro ao atualizar usuário:', error);
+    return res.status(500).json({ error: 'Erro interno ao atualizar usuário.' });
+  }
+    }
+
+    async deletarUsuario(req, res) {
+    try {
+        const usuarioId = req.usuarioId; // ID do usuário autenticado
+
+        // Verifica se há locais de coleta associados a esse usuário
+        const locais = await LocaisDeUsuarios.findAll({
+            where: { usuario_id: usuarioId }
+        });
+
+        if (locais.length > 0) {
+            return res.status(400).json({
+                error: 'Você ainda possui locais de coleta cadastrados. Exclua-os antes de deletar sua conta.'
+            });
+        }
+
+        // Busca o usuário
+        const usuario = await Usuario.findByPk(usuarioId);
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado.' });
+        }
+
+        // Deleta o usuário
+        await usuario.destroy();
+
+        return res.status(200).json({ message: 'Conta excluída com sucesso.' });
+    } catch (error) {
+        console.error('Erro ao deletar usuário:', error);
+        return res.status(500).json({ error: 'Erro interno ao tentar deletar o usuário.' });
+    }
 }
-
+    
+}
 module.exports = new UsuarioController(); // Exporta uma nova instância do controller de usuários. O controller é exportado para ser usado em outros arquivos, como o router. A instância é criada para que o controller possa ser usado como um singleton, ou seja, uma única instância do controller é criada e usada em toda a aplicação.

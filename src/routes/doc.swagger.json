@@ -1,0 +1,529 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API de Locais de Coleta",
+    "description": "Documentação da API Recicla365 usando Express e Sequelize",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Insira o token JWT"
+    }
+  },
+  "paths": {
+    "/usuarios/cadastrar": {
+      "post": {
+        "tags": [
+          "Usuários"
+        ],
+        "description": "Endpoint para criar um novo usuário",
+        "parameters": [
+          {
+            "name": "Cadastro de usuario",
+            "in": "body",
+            "description": "Dados do usuário a ser criado",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string",
+                  "example": "Kami Cat da Silva"
+                },
+                "sexo": {
+                  "type": "string",
+                  "example": "Feminino"
+                },
+                "cpf": {
+                  "type": "string",
+                  "example": "12385552905"
+                },
+                "endereco": {
+                  "type": "string",
+                  "example": "R. Alfredo, 123"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "kami@email.com"
+                },
+                "senha": {
+                  "type": "string",
+                  "example": "minhasenha123"
+                },
+                "data_nascimento": {
+                  "type": "string",
+                  "example": "01-02-2021"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/usuarios/login": {
+      "post": {
+        "tags": [
+          "Usuários"
+        ],
+        "description": "Endpoint para fazer login",
+        "parameters": [
+          {
+            "name": "Login de usuario",
+            "in": "body",
+            "description": "Insira os dados para realizar o login de usuário",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "kami@email.com"
+                },
+                "senha": {
+                  "type": "string",
+                  "example": "minhasenha123"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/usuarios/atualizar/{id}": {
+      "put": {
+        "tags": [
+          "Usuários"
+        ],
+        "description": "Endpoint para atualizar dados do usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "Atualizar dados",
+            "in": "body",
+            "description": "Insira apenas os dados que deseja atualizar",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string",
+                  "example": ""
+                },
+                "sexo": {
+                  "type": "string",
+                  "example": ""
+                },
+                "cpf": {
+                  "type": "string",
+                  "example": ""
+                },
+                "endereco": {
+                  "type": "string",
+                  "example": ""
+                },
+                "email": {
+                  "type": "string",
+                  "example": ""
+                },
+                "senha": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data_nascimento": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/usuarios/deletar/{id}": {
+      "delete": {
+        "tags": [
+          "Usuários"
+        ],
+        "description": "Endpoint para deletar o usuário (Para deletar o usuário, é necessário excluir os locais de coleta associados a ele primeiro)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/locaisDeColeta/cadastrar": {
+      "post": {
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para CRIAR um novo local de coleta",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "Cadastrar locais de coleta",
+            "in": "body",
+            "description": "Dados do local de coleta a ser criado",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome_do_local": {
+                  "type": "string",
+                  "example": "Eco Ponto"
+                },
+                "descricao": {
+                  "type": "string",
+                  "example": "Local para coleta de materiais recicláveis"
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "São Paulo"
+                },
+                "cidade": {
+                  "type": "string",
+                  "example": "São Paulo"
+                },
+                "cep": {
+                  "type": "string",
+                  "example": "12345-678"
+                },
+                "bairro": {
+                  "type": "string",
+                  "example": "Centro"
+                },
+                "rua": {
+                  "type": "string",
+                  "example": "Rua das Flores"
+                },
+                "numero": {
+                  "type": "string",
+                  "example": "123"
+                },
+                "coordenadas": {
+                  "type": "string",
+                  "example": "-23.5505,-46.6333"
+                },
+                "materiais_aceitos": {
+                  "type": "string",
+                  "example": "papel, plástico, vidro"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/locaisDeColeta/listar": {
+      "get": {
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para LISTAR todos os locais cadastrados",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/locaisDeColeta/local/{local_id}": {
+      "get": {
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para LISTAR UM LOCAL de coleta detalhadamente",
+        "parameters": [
+          {
+            "name": "local_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para DELETAR locais cadastrados por ID",
+        "parameters": [
+          {
+            "name": "local_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/locaisDeColeta/atualizar/{local_id}": {
+      "put": {
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para ATUALIZAR um local de coleta",
+        "parameters": [
+          {
+            "name": "local_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "Atualizar locais de coleta",
+            "in": "body",
+            "description": "Dados do local de coleta a ser atualizado",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome_do_local": {
+                  "type": "string",
+                  "example": "Recicla +"
+                },
+                "descricao": {
+                  "type": "string",
+                  "example": "Local Muito Massa"
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "SP"
+                },
+                "cidade": {
+                  "type": "string",
+                  "example": "São Paulo"
+                },
+                "cep": {
+                  "type": "string",
+                  "example": "88020010"
+                },
+                "bairro": {
+                  "type": "string",
+                  "example": "Centro"
+                },
+                "rua": {
+                  "type": "string",
+                  "example": "Rua da Sustentabilidade"
+                },
+                "numero": {
+                  "type": "string",
+                  "example": "123"
+                },
+                "coordenadas": {
+                  "type": "string",
+                  "example": "1"
+                },
+                "materiais_aceitos": {
+                  "type": "string",
+                  "example": "Plástico, Papel, Vidro, Metal"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/locaisDeColeta/local/maps/{local_id}": {
+      "get": {
+        "tags": [
+          "Locais de Coleta"
+        ],
+        "description": "Endpoint para LISTAR todos os locais cadastrados",
+        "parameters": [
+          {
+            "name": "local_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ]
+}
