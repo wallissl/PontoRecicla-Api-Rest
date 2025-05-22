@@ -68,7 +68,7 @@ usuarioRoutes.put('/atualizar/:id', validaToken, UsuarioController.atualizarUsua
             endereco: "",
             email: "",
             senha: "",
-            data_nascimento: "",
+            data_nascimento: (dia-mes-ano)"",
         }   
     }
     */
