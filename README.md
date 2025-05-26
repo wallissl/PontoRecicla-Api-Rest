@@ -1,4 +1,4 @@
-♻️# Recicla365-API-REST
+**♻️ Recicla365-API-REST**
 API RESTful desenvolvida em Node.js com Express para gerenciar usuários e locais de coleta de materiais recicláveis.
 
 ✅ Cadastro e autenticação de usuários
