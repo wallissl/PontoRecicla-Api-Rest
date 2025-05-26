@@ -55,4 +55,63 @@ API RESTful desenvolvida em Node.js com Express para gerenciar usuários e locai
 ---
 
 ## 🏗️ **Estrutura do Projeto**
+src/<br>
+├── controllers/<br>
+├── models/<br>
+├── routes/<br>
+├── middlewares/<br>
+├── config/<br>
+└── app.js<br>
 
+---
+
+## 📦 **Instalação**
+**Clone o repositório:**<br>
+git clone https://github.com/seu-usuario/recicla365-api-rest.git <br>
+
+**Acesse a pasta do projeto:**<br>
+cd recicla365-api-rest <br>
+
+**Instale as dependências:**<br>
+npm install <br>
+
+---
+
+## ⚙️ **Configuração**
+- Renomeie o arquivo .env.example para .env.
+- Preencha as variáveis de ambiente, por exemplo:
+- DB_HOST=localhost
+- DB_USER=seu_usuario
+- DB_PASSWORD=sua_senha
+- DB_NAME=recicla365
+- DB_PORT=5432
+- JWT_SECRET=sua_chave_secreta
+
+---
+
+## 🗄️ **Rodando as Migrations**
+- npx sequelize-cli db:migrate
+
+---
+
+## ▶️ **Executando a aplicação**
+- npm run start:dev
+
+---
+
+## 📄 **Documentação da API**
+Acesse a documentação interativa via Swagger:
+👉 http://localhost:3000/docs/
+
+---
+
+## 🛡️ **Autenticação**
+A maioria das rotas é protegida. <br>
+Utilize um token JWT no header Authorization com o prefixo Bearer.
+
+---
+
+## 📞 **Contato**
+🙋‍♂️ Wallis Silva <br>
+📧 Email: wallis.sl@outlook.com <br>
+🔗 LinkedIn: www.linkedin.com/in/wallis/
