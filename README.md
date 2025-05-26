@@ -1,4 +1,8 @@
-# **Recicla365-API-REST** ♻️
+# **PontoReclica-API-REST** ♻️
+
+O PontoRecicla é um projeto desenvolvido para facilitar o cadastro e a localização de pontos de coleta de materiais recicláveis. Ele nasceu da necessidade de promover ações sustentáveis, incentivando o descarte correto de resíduos e contribuindo ativamente para a preservação do meio ambiente e a melhoria da qualidade de vida no planeta.
+
+---
 
 API RESTful desenvolvida em Node.js com Express para gerenciar usuários e locais de coleta de materiais recicláveis.
 
@@ -102,6 +106,8 @@ npm install <br>
 ## 📄 **Documentação da API**
 Acesse a documentação interativa via Swagger:
 👉 http://localhost:3000/docs/
+
+![Imagem Swagger](./imagens/swagger.png)
 
 ---
 
