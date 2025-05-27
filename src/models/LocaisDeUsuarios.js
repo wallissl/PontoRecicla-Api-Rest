@@ -36,7 +36,4 @@ LocaisDeUsuarios.belongsTo(LocaisDeColeta, {
     as: 'local', // Nome do alias para o relacionamento
 }) 
 
-
-
-
 module.exports = LocaisDeUsuarios; // Exporta o modelo de locais de usuários. O modelo é exportado para ser usado em outros arquivos, como o controller e o router. O modelo é usado para fazer operações no banco de dados, como criar, ler, atualizar e deletar registros.

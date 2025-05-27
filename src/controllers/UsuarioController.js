@@ -120,86 +120,86 @@ class UsuarioController{
     } // Método para fazer login. O método é responsável por fazer o login do usuário. O método recebe os dados do usuário e verifica se o usuário existe no banco de dados. Se o usuário existir, o método retorna os dados do usuário. Se o usuário não existir, o método retorna uma mensagem de erro.
 
     async atualizarUsuario(req, res) {
-    try {
-        const id = req.usuarioId;
-        const usuario = await Usuario.findByPk(id);
+        try {
+            const id = req.usuarioId;
+            const usuario = await Usuario.findByPk(id);
 
-       
-        const { nome, sexo, cpf, endereco, email, senha, data_nascimento } = req.body;
+        
+            const { nome, sexo, cpf, endereco, email, senha, data_nascimento } = req.body;
 
-        // Objeto para guardar somente os campos que mudaram
-        const camposParaAtualizar = {};
+            // Objeto para guardar somente os campos que mudaram
+            const camposParaAtualizar = {};
 
-        if (nome && nome !== usuario.nome) camposParaAtualizar.nome = nome;
-        if (sexo && sexo !== usuario.sexo) camposParaAtualizar.sexo = sexo;
-        if (cpf && cpf !== usuario.cpf) {
-        const cpfExiste = await Usuario.findOne({ where: { cpf } });
-        if (cpfExiste && cpfExiste.id !== usuario.id) {
-            return res.status(400).json({ error: 'Este CPF já está em uso.' });
+            if (nome && nome !== usuario.nome) camposParaAtualizar.nome = nome;
+            if (sexo && sexo !== usuario.sexo) camposParaAtualizar.sexo = sexo;
+            if (cpf && cpf !== usuario.cpf) {
+            const cpfExiste = await Usuario.findOne({ where: { cpf } });
+            if (cpfExiste && cpfExiste.id !== usuario.id) {
+                return res.status(400).json({ error: 'Este CPF já está em uso.' });
+            }
+            camposParaAtualizar.cpf = cpf;
+            }
+            if (endereco && endereco !== usuario.endereco) camposParaAtualizar.endereco = endereco;
+            if (email && email !== usuario.email) {
+            const emailExiste = await Usuario.findOne({ where: { email } });
+            if (emailExiste && emailExiste.id !== usuario.id) {
+                return res.status(400).json({ error: 'Este e-mail já está em uso.' });
+            }
+            camposParaAtualizar.email = email;
+            }
+            if (senha && senha !== usuario.senha) camposParaAtualizar.senha = senha;
+            if (data_nascimento && data_nascimento !== usuario.data_nascimento) {
+            // Converter "dd-mm-aaaa" para "aaaa-mm-dd"
+            const dataConvertida = new Date(data_nascimento.split('-').reverse().join('-'));
+            camposParaAtualizar.data_nascimento = dataConvertida;
+            }
+
+            // Se não houver nenhum campo para atualizar
+            if (Object.keys(camposParaAtualizar).length === 0) {
+            return res.status(200).json({ message: 'Nenhum dado foi modificado.' });
+            }
+
+            await usuario.update(camposParaAtualizar);
+
+            return res.status(200).json({ message: 'Usuário atualizado com sucesso.' });
+
+        }catch (error) {
+            console.error('Erro ao atualizar usuário:', error);
+            return res.status(500).json({ error: 'Erro interno ao atualizar usuário.' });
         }
-        camposParaAtualizar.cpf = cpf;
-        }
-        if (endereco && endereco !== usuario.endereco) camposParaAtualizar.endereco = endereco;
-        if (email && email !== usuario.email) {
-        const emailExiste = await Usuario.findOne({ where: { email } });
-        if (emailExiste && emailExiste.id !== usuario.id) {
-            return res.status(400).json({ error: 'Este e-mail já está em uso.' });
-        }
-        camposParaAtualizar.email = email;
-        }
-        if (senha && senha !== usuario.senha) camposParaAtualizar.senha = senha;
-        if (data_nascimento && data_nascimento !== usuario.data_nascimento) {
-        // Converter "dd-mm-aaaa" para "aaaa-mm-dd"
-        const dataConvertida = new Date(data_nascimento.split('-').reverse().join('-'));
-        camposParaAtualizar.data_nascimento = dataConvertida;
-        }
-
-        // Se não houver nenhum campo para atualizar
-        if (Object.keys(camposParaAtualizar).length === 0) {
-        return res.status(200).json({ message: 'Nenhum dado foi modificado.' });
-        }
-
-        await usuario.update(camposParaAtualizar);
-
-        return res.status(200).json({ message: 'Usuário atualizado com sucesso.' });
-
-    }catch (error) {
-    console.error('Erro ao atualizar usuário:', error);
-    return res.status(500).json({ error: 'Erro interno ao atualizar usuário.' });
-  }
     }
 
     async deletarUsuario(req, res) {
-    try {
-        const usuarioId = req.usuarioId; // ID do usuário autenticado
+        try {
+            const usuarioId = req.usuarioId; // ID do usuário autenticado
 
-        // Verifica se há locais de coleta associados a esse usuário
-        const locais = await LocaisDeUsuarios.findAll({
-            where: { usuario_id: usuarioId }
-        });
-
-        if (locais.length > 0) {
-            return res.status(400).json({
-                error: 'Você ainda possui locais de coleta cadastrados. Exclua-os antes de deletar sua conta.'
+            // Verifica se há locais de coleta associados a esse usuário
+            const locais = await LocaisDeUsuarios.findAll({
+                where: { usuario_id: usuarioId }
             });
+
+            if (locais.length > 0) {
+                return res.status(400).json({
+                    error: 'Você ainda possui locais de coleta cadastrados. Exclua-os antes de deletar sua conta.'
+                });
+            }
+
+            // Busca o usuário
+            const usuario = await Usuario.findByPk(usuarioId);
+
+            if (!usuario) {
+                return res.status(404).json({ error: 'Usuário não encontrado.' });
+            }
+
+            // Deleta o usuário
+            await usuario.destroy();
+
+            return res.status(200).json({ message: 'Conta excluída com sucesso.' });
+        }catch (error) {
+            console.error('Erro ao deletar usuário:', error);
+            return res.status(500).json({ error: 'Erro interno ao tentar deletar o usuário.' });
         }
-
-        // Busca o usuário
-        const usuario = await Usuario.findByPk(usuarioId);
-
-        if (!usuario) {
-            return res.status(404).json({ error: 'Usuário não encontrado.' });
-        }
-
-        // Deleta o usuário
-        await usuario.destroy();
-
-        return res.status(200).json({ message: 'Conta excluída com sucesso.' });
-    } catch (error) {
-        console.error('Erro ao deletar usuário:', error);
-        return res.status(500).json({ error: 'Erro interno ao tentar deletar o usuário.' });
     }
-}
     
 }
 module.exports = new UsuarioController(); // Exporta uma nova instância do controller de usuários. O controller é exportado para ser usado em outros arquivos, como o router. A instância é criada para que o controller possa ser usado como um singleton, ou seja, uma única instância do controller é criada e usada em toda a aplicação.

@@ -135,40 +135,31 @@
             "type": "string"
           },
           {
-            "name": "Atualizar dados",
+            "name": "body",
             "in": "body",
-            "description": "Insira apenas os dados que deseja atualizar",
-            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "nome": {
-                  "type": "string",
-                  "example": ""
+                  "example": "any"
                 },
                 "sexo": {
-                  "type": "string",
-                  "example": ""
+                  "example": "any"
                 },
                 "cpf": {
-                  "type": "string",
-                  "example": ""
+                  "example": "any"
                 },
                 "endereco": {
-                  "type": "string",
-                  "example": ""
+                  "example": "any"
                 },
                 "email": {
-                  "type": "string",
-                  "example": ""
+                  "example": "any"
                 },
                 "senha": {
-                  "type": "string",
-                  "example": ""
+                  "example": "any"
                 },
                 "data_nascimento": {
-                  "type": "string",
-                  "example": ""
+                  "example": "any"
                 }
               }
             }

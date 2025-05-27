@@ -1,6 +1,3 @@
-/* const { version } = require('react');
-const { host } = require('./src/config/database.config'); */
-
 const swaggerAutogen = require('swagger-autogen')();
 
 const doc = {

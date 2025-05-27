@@ -1,9 +1,7 @@
-
 const { Router } = require('express');
 
 const LocaisDeColetaController = require('../controllers/LocaisDeColetaController');
 console.log(LocaisDeColetaController)
-
 
 const locaisDeColetaRoutes = new Router()
 
