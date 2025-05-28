@@ -2,6 +2,7 @@
 
 O PontoRecicla é um projeto desenvolvido para facilitar o cadastro e a localização de pontos de coleta de materiais recicláveis. Ele nasceu da necessidade de promover ações sustentáveis, incentivando o descarte correto de resíduos e contribuindo ativamente para a preservação do meio ambiente e a melhoria da qualidade de vida no planeta.
 
+![CodeEcoPontoAPI](https://github.com/user-attachments/assets/a527622c-77b6-48a0-84ef-43e46c7d003d)
 ---
 
 API RESTful desenvolvida em Node.js com Express para gerenciar usuários e locais de coleta de materiais recicláveis.
@@ -107,7 +108,7 @@ npm install <br>
 Acesse a documentação interativa via Swagger:
 👉 http://localhost:3000/docs/
 
-![Imagem Swagger](./imagens/swagger.png)
+![swagger](https://github.com/user-attachments/assets/0b59647c-8734-4a36-9acc-85d60a345999)
 
 ---
 
