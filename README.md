@@ -72,10 +72,10 @@ src/<br>
 
 ## 📦 **Instalação**
 **Clone o repositório:**<br>
-git clone https://github.com/seu-usuario/recicla365-api-rest.git <br>
+git clone https://github.com/wallissl/PontoRecicla-Api-Rest.git <br>
 
 **Acesse a pasta do projeto:**<br>
-cd recicla365-api-rest <br>
+cd PontoRecicla-Api-Rest <br>
 
 **Instale as dependências:**<br>
 npm install <br>
